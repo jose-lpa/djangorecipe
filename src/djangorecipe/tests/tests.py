@@ -142,15 +142,19 @@ class TestRecipe(BaseTestRecipe):
         # If a project does not exist already the recipe will create
         # one.
         project_dir = os.path.join(self.buildout_dir, 'project')
+        settings_dir = os.path.join(project_dir, 'settings')
         self.recipe.create_project(project_dir)
 
-        # This should have create a project directory
+        # This should have create project directories.
         self.assertTrue(os.path.exists(project_dir))
-        # With this directory we should have a list of files.
-        for f in ('settings.py', 'development.py', 'production.py',
-                  '__init__.py', 'urls.py', 'media', 'templates'):
+        self.assertTrue(os.path.exists(settings_dir))
+        # With this directories we should have a list of files.
+        for f in ('__init__.py', 'urls.py', 'media', 'templates'):
             self.assertTrue(
                 os.path.exists(os.path.join(project_dir, f)))
+        for f in ('base.py', 'development.py', 'production.py'):
+            self.assertTrue(
+                os.path.exists(os.path.join(settings_dir, f)))
 
 
 class TestRecipeScripts(BaseTestRecipe):
@@ -326,12 +330,13 @@ class TestBoilerplate(BaseTestRecipe):
         """Test the default boilerplate."""
 
         project_dir = os.path.join(self.buildout_dir, 'project')
+        settings_dir = os.path.join(project_dir, 'settings')
 
         secret = '$55upfci7a#gi@&e9o1-hb*k+f$3+(&b$j=cn67h#22*0%-bj0'
         self.recipe.generate_secret = lambda: secret
 
         self.recipe.create_project(project_dir)
-        settings = open(os.path.join(project_dir, 'settings.py')).read()
+        settings = open(os.path.join(settings_dir, 'base.py')).read()
         settings_dict = {'project': self.recipe.options['project'],
                          'secret': secret,
                          'urlconf': self.recipe.options['urlconf'],
@@ -352,8 +357,9 @@ class TestBoilerplate(BaseTestRecipe):
         recipe.generate_secret = lambda: secret
 
         project_dir = os.path.join(self.buildout_dir, 'project')
+        settings_dir = os.path.join(project_dir, 'settings')
         recipe.create_project(project_dir)
-        settings = open(os.path.join(project_dir, 'settings.py')).read()
+        settings = open(os.path.join(settings_dir, 'base.py')).read()
         settings_dict = {'project': self.recipe.options['project'],
                          'secret': secret,
                          'urlconf': self.recipe.options['urlconf'],
