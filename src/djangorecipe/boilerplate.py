@@ -31,8 +31,9 @@ from %(project)s.settings.base import *
 
 development_settings = """
 from %(project)s.settings.base import *
-DEBUG=True
-TEMPLATE_DEBUG=DEBUG
+
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 """
 
 urls_template = """
