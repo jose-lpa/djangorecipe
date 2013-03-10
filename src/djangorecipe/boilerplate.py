@@ -26,11 +26,11 @@ import %(module_name)s
 }
 
 production_settings = """
-from %(project)s.settings import *
+from %(project)s.settings.base import *
 """
 
 development_settings = """
-from %(project)s.settings import *
+from %(project)s.settings.base import *
 DEBUG=True
 TEMPLATE_DEBUG=DEBUG
 """
@@ -168,6 +168,8 @@ settings_template_1_3 = """
 
 import os
 
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), os.path.pardir)
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -271,7 +273,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), "templates"),
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -317,14 +319,14 @@ versions = {
         'urls': urls_template,
         'production_settings': production_settings,
         'development_settings': development_settings,
-        },
+    },
     '1.3': {
         'settings': settings_template_1_3,
         'urls': urls_template,
         'production_settings': production_settings,
         'development_settings': development_settings,
-        },
-    }
+    },
+}
 
 # Easy way to specify the newest Django version.
 versions['Newest'] = versions['1.3']

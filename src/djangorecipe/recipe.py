@@ -107,7 +107,7 @@ class Recipe(object):
             return []
 
     def create_project(self, project_dir):
-        os.makedirs(project_dir)
+        os.makedirs(os.path.join(project_dir, 'settings'))
 
         # Find the current Django versions in the buildout versions.
         # Assume the newest Django when no version is found.
@@ -129,11 +129,11 @@ class Recipe(object):
         template_vars.update(self.options)
 
         self.create_file(
-            os.path.join(project_dir, 'development.py'),
+            os.path.join(project_dir, 'settings', 'development.py'),
             config['development_settings'], template_vars)
 
         self.create_file(
-            os.path.join(project_dir, 'production.py'),
+            os.path.join(project_dir, 'settings', 'production.py'),
             config['production_settings'], template_vars)
 
         self.create_file(
@@ -141,7 +141,7 @@ class Recipe(object):
             config['urls'], template_vars)
 
         self.create_file(
-            os.path.join(project_dir, 'settings.py'),
+            os.path.join(project_dir, 'settings', 'base.py'),
             config['settings'], template_vars)
 
         # Create the media and templates directories for our
